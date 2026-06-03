@@ -21,7 +21,7 @@
 -->
 
 <resources>
-    <string name="app_name">UsbGps</string>
+    <string name="app_name">UsbGps4Droid-J</string>
 
     <string name="pref_start_gps_title">GPS 開始/停止</string>
     <string name="pref_start_gps_summary_off">USB GPS はオフです</string>
@@ -149,7 +149,7 @@
     <string name="location_placeholder">位置情報: 緯度 %1$s, 経度 %2$s</string>
     <string name="elevation_placeholder">高度: %s</string>
 
-    <string name="info_activity_title">UsbGps - 概要</string>
+    <string name="info_activity_title">UsbGps4Droid-J - 概要</string>
 
     <string name="pref_start_on_boot_summary_on">Android 起動時に USB GPS サービスを開始します</string>
     <string name="pref_start_on_boot_summary_off">Android 起動時に USB GPS サービスを開始しません</string>
