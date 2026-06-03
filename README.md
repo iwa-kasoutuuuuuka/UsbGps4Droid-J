@@ -11,6 +11,9 @@
 ビルド済みのAPKファイルは、以下のGitHub Releasesページからダウンロードできます：  
 👉 **[UsbGps4Droid-J Releases (v2.3.0)](https://github.com/iwa-kasoutuuuuuka/UsbGps4Droid-J/releases/tag/v2.3.0)**
 
+Pre-built APK files can be downloaded from the GitHub Releases page:  
+👉 **[UsbGps4Droid-J Releases (v2.3.0)](https://github.com/iwa-kasoutuuuuuka/UsbGps4Droid-J/releases/tag/v2.3.0)**
+
 ---
 
 ## 🎯 用途・何に使えるのか (Use Cases / What is it used for?)
@@ -38,24 +41,31 @@
 
 1. **Complete Japanese Localization / 完全日本語対応**
    - すべてのメニュー、設定項目、メッセージ、エラー表示を自然な日本語にローカライズしました。
+   - All menus, settings, messages, and error messages have been localized into natural Japanese.
 
 2. **Anytime Language Switching / 任意の言語切り替え**
    - システム設定に依存せず、アプリの設定画面からいつでも「日本語」「英語」「システムデフォルト」を相互に切り替えることができます。
+   - You can switch between "Japanese", "English", and "System Default" from the in-app settings screen at any time, independently of system-wide language settings.
 
 3. **Kotlin Migration / Kotlinへの完全移行**
    - 既存のJavaコードを100% Kotlinコードに置き換え、Null安全性の向上とプログラムの堅牢化を実現しました。
+   - The original Java codebase has been 100% migrated to Kotlin, improving null safety and app robustness.
 
 4. **Storage Access Framework (SAF) Support / 現代的な保存フォルダ選択**
    - Android 10 以降のフォルダ保存制限に対応し、フォルダピッカーを用いて安全に保存先フォルダを任意に選択・永続アクセス権限の取得が可能になりました。
+   - Supports Scoped Storage requirements starting from Android 10, enabling users to choose a custom directory via the standard directory picker and persist read/write URI permissions.
 
 5. **Speed Filter (Drift Prevention) / 速度フィルタ機能**
    - 静止時のGPS位置の小刻みなブレ（ドリフト）を抑制するソフトウェアフィルタを実装。しきい値速度（km/h）を設定し、それ未満の極低速・静止時に現在地の微小なふらつきを防ぎます。
+   - Implements a software filter that suppresses location updates when moving below a user-defined threshold speed (km/h) to prevent GPS location drifting when stationary.
 
 6. **Simultaneous GPX Tracking / GPX形式の並行自動保存**
    - NMEAログ保存時、同時に汎用的なGPX形式ファイルでも自動保存されるため、Google Earthなどの他アプリやGPSログビューアーにそのままインポートして軌跡を確認できます。
+   - Automatically and simultaneously generates and records a GPX format file alongside the raw NMEA log, allowing direct imports to Google Earth or other GPS log viewers.
 
 7. **Cockpit UI Dashboard / コックピット風ステータス表示**
    - メインステータス画面に現在の「時速 (km/h)」および「進行方位（日本語方角＋角度）」を視覚的に分かりやすく表示するダッシュボードレイアウトを追加しました。
+   - Displays real-time speed in km/h and heading (cardinal direction and degree) on the main status dashboard screen for a cockpit-like experience.
 
 ---
 
