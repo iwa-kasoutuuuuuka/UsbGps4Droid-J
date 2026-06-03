@@ -96,4 +96,6 @@
     <string name="sirf_bin_dgps_ext_on">85020000000000</string>
     <string name="sirf_bin_dgps_sbas_on">85010000000000</string>
     <string name="sirf_software_version">8400</string>
+    <string name="pref_language_key">appLanguage</string>
+    <string name="defaultLanguage">default</string>
 </resources>

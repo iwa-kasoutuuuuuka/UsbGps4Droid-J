@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+	Copyright (C) 2010, 2011, 2012, 2013 Herbert von Broeuschmeul
+	Copyright (C) 2010, 2011, 2012, 2013 BluetoothGPS4Droid Project
+	Copyright (C) 2011, 2012, 2013 UsbGPS4Droid Project
+	  
+	This file is part of UsbGPS4Droid.
+	
+    UsbGPS4Droid is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    UsbGPS4Droid is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with UsbGPS4Droid.  If not, see http://www.gnu.org/licenses/
+    
+-->
+
+<resources>
+    <string name="app_name">UsbGps</string>
+
+    <string name="pref_start_gps_title">GPS 開始/停止</string>
+    <string name="pref_start_gps_summary_off">USB GPS はオフです</string>
+    <string name="pref_start_gps_summary_on">USB GPS はオンです</string>
+    <string name="pref_start_gps_params_title">GPS オプション (SiRF)</string>
+    <string name="pref_gps_location_provider_title">位置情報プロバイダのオプション</string>
+    <string name="pref_gps_location_provider_summary">USB GPS で内蔵 GPS を置き換えます</string>
+    <string name="pref_replace_std_gps_title">内蔵 GPS を置き換える</string>
+
+    <string name="pref_replace_std_gps_summary">内蔵 GPS を無効化する</string>
+
+    <string name="pref_force_enable_provider_title">位置情報プロバイダの自動有効化</string>
+    <string name="pref_force_enable_provider_summary_on">位置情報プロバイダが無効になっていても自動で有効化します</string>
+    <string name="pref_force_enable_provider_summary_off">位置情報プロバイダが存在しない場合のみ自動で有効化します</string>
+    <string name="pref_mock_gps_name_title">仮の位置情報プロバイダ名</string>
+    <string name="pref_mock_gps_name_summary">USB GPS名: %s</string>
+    <string name="pref_connection_retries_title">接続再試行回数</string>
+    <string name="pref_connection_retries_summary">終了するまでの試行回数: %s</string>
+    <string name="pref_recording_title">NMEAログの有効化/無効化</string>
+    <string name="pref_recording_summary">USB GPS の位置情報データを記録します</string>
+    <string name="pref_recording_params_title">記録パラメータ</string>
+    <string name="pref_trackfile_prefix_title">トラックファイルのプレフィックス</string>
+    <string name="pref_trackfile_prefix_summary">トラックファイルのプレフィックスを選択します</string>
+    <string name="pref_trackfile_directory_title">トラックファイルの保存先</string>
+    <string name="pref_trackfile_directory_summary">トラックファイルを保存するディレクトリを選択します</string>
+    <string name="pref_gps_device_title">USB GPS の選択</string>
+    <string name="pref_gps_device_summary">"現在のデバイス: %s"</string>
+    <string name="pref_gps_device_speed_title">GPS デバイスの通信速度を選択</string>
+    <string name="pref_gps_device_speed_summary">"現在の速度: %s"</string>
+    <string name="pref_about_title">このアプリについて</string>
+    <string name="pref_about_summary"></string>
+
+    <string name="pref_sirf_gps_title">SiRF GPS</string>
+    <string name="pref_sirf_gps_summary">SiRF オプションを有効化</string>
+    <string name="pref_sirf_nmea_category_title">NMEA センテンスの選択</string>
+    <string name="pref_sirf_gps_category_title">GPS 動作設定</string>
+    <string name="pref_enable_gga_title">NMEA GGA を有効化</string>
+    <string name="pref_enable_gga_summary_off">NMEA GGA センテンスはオフです</string>
+    <string name="pref_enable_gga_summary_on">NMEA GGA センテンスはオンです</string>
+    <string name="pref_enable_rmc_title">NMEA RMC を有効化</string>
+    <string name="pref_enable_rmc_summary_off">NMEA RMC センテンスはオフです</string>
+    <string name="pref_enable_rmc_summary_on">NMEA RMC センテンスはオンです</string>
+    <string name="pref_enable_gll_title">NMEA GLL を有効化</string>
+    <string name="pref_enable_gll_summary_off">NMEA GLL センテンスはオフです</string>
+    <string name="pref_enable_gll_summary_on">NMEA GLL センテンスはオンです</string>
+    <string name="pref_enable_vtg_title">NMEA VTG を有効化</string>
+    <string name="pref_enable_vtg_summary_off">NMEA VTG センテンスはオフです</string>
+    <string name="pref_enable_vtg_summary_on">NMEA VTG センテンスはオンです</string>
+    <string name="pref_enable_gsa_title">NMEA GSA を有効化</string>
+    <string name="pref_enable_gsa_summary_off">NMEA GSA センテンスはオフです</string>
+    <string name="pref_enable_gsa_summary_on">NMEA GSA センテンスはオンです</string>
+    <string name="pref_enable_gsv_title">NMEA GSV を有効化</string>
+    <string name="pref_enable_gsv_summary_off">NMEA GSV センテンスはオフです</string>
+    <string name="pref_enable_gsv_summary_on">NMEA GSV センテンスはオンです</string>
+    <string name="pref_enable_zda_title">NMEA ZDA を有効化</string>
+    <string name="pref_enable_zda_summary_off">NMEA ZDA センテンスはオフです</string>
+    <string name="pref_enable_zda_summary_on">NMEA ZDA センテンスはオンです</string>
+    <string name="pref_enable_sbas_title">SBAS (WAAS/EGNOS/MSAS)</string>
+    <string name="pref_enable_sbas_summary_off">SBAS はオフです</string>
+    <string name="pref_enable_sbas_summary_on">SBAS はオンです</string>
+    <string name="pref_enable_nmea_title">NMEA/バイナリ モード</string>
+    <string name="pref_enable_nmea_summary_off">バイナリモードがオンです</string>
+    <string name="pref_enable_nmea_summary_on">NMEAモードがオンです</string>
+    <string name="pref_enable_static_navigation_title">スタティックナビゲーション</string>
+    <string name="pref_enable_static_navigation_summary_off">スタティックナビゲーション無効</string>
+    <string name="pref_enable_static_navigation_summary_on">スタティックナビゲーション有効</string>
+
+    <string name="msg_gps_provider_started">USB GPS... 開始しました</string>
+    <string name="msg_gps_provider_stopped">USB GPS... 停止しました</string>
+    <string name="msg_gps_provider_already_started">USB GPS... は既に動作しています</string>
+    <string name="msg_gps_provider_stopped_by_problem">"起動できません: %s"</string>
+    <string name="msg_two_many_connection_problems">接続エラーが多すぎます</string>
+    <string name="msg_gps_provider_disabled">GPS は無効です</string>
+    <string name="msg_gps_provider_cant_connect">デバイスに接続できません</string>
+
+    <string name="msg_mock_location_disabled">設定で「仮の位置情報」が無効になっています</string>
+    <string name="msg_mock_location_disabled_full">設定で「仮の位置情報」が無効になっています\nここをクリックして有効にしてください</string>
+    <string name="msg_mock_location_disabled_full_dialog_text">設定で「仮の位置情報」が無効になっています\n「開発者向けオプション」を開きますか？</string>
+    <string name="msg_usb_provider_device_not_connected">デバイスが接続されていません</string>
+    <string name="msg_nmea_recording_started">GPS NMEA 記録... 開始しました</string>
+    <string name="msg_nmea_recording_stopped">GPS NMEA 記録... 停止しました</string>
+    <string name="msg_nmea_recording_already_started">GPS トラック記録... は既に動作しています</string>
+    <string name="foreground_service_started_notification_title">UsbGps</string>
+    <string name="foreground_gps_provider_started_notification">UsbGps サービスが開始されました</string>
+    <string name="foreground_nmea_recording_started_notification">UsbGps NMEA 記録サービスが開始されました</string>
+    <string name="connection_problem_notification_title">UsbGps: 接続に問題が発生しました</string>
+    <plurals name="connection_problem_notification">
+        <item quantity="one">終了する前にあと1回再試行します</item>
+        <item quantity="other">終了する前にあと %d 回再試行します</item>
+    </plurals>
+    <string name="service_closed_because_connection_problem_notification_title">UsbGps 停止しました</string>
+    <string name="service_closed_because_connection_problem_notification">"原因: %s"</string>
+
+    <string name="about_title">このアプリについて</string>
+    <string name="about_version">UsbGPS4Droid %s</string>
+    <string name="about_copyright_1">Copyright (C) 2015-2017 Oliver Bell</string>
+    <string name="about_copyright_2">Copyright (C) 2010-2013 Herbert von Broeuschmeul</string>
+    <string name="about_copyright_3">Copyright (C) 2010-2013 BluetoothGPS4Droid Project</string>
+    <string name="about_copyright_4">Copyright (C) 2011-2013 UsbGPS4Droid Project</string>
+    <string name="about_app_desc">Usb GPS for Android は、Androidデバイスで外部USB GPSを使用するためのアプリケーションです。</string>
+    <string name="about_license">本ソフトウェアは、<a href="http://www.gnu.org/licenses/gpl-3.0-standalone.html"><b>GNU General Public License</b></a> の規約に基づいて無償で配布されるオープンソースソフトウェアです。</string>
+    <string name="about_sources">ソースコードはこちらから入手できます:\nhttps://github.com/freshollie/UsbGps4Droid</string>
+
+    <string name="msg_no_location_permission">位置情報の権限が付与されていません。ここをクリックして有効にしてください。</string>
+
+    <string-array name="pref_gps_device_speed_values">
+        <item>自動</item>
+        <item>1200</item>
+        <item>2400</item>
+        <item>4800</item>
+        <item>9600</item>
+        <item>19200</item>
+        <item>38400</item>
+        <item>57600</item>
+        <item>115200</item>
+    </string-array>
+
+    <string name="title_activity_settings">USB GPS 設定</string>
+
+    <string name="pref_toast_logging_title">トースト通知を表示</string>
+    <string name="pref_toast_logging_summary">USB GPS のステータス変更時にデバッグ用トーストメッセージを表示します</string>
+
+    <string name="number_of_satellites_placeholder">衛星の数: %s</string>
+    <string name="accuracy_placeholder">精度: %s</string>
+    <string name="location_placeholder">位置情報: 緯度 %1$s, 経度 %2$s</string>
+    <string name="elevation_placeholder">高度: %s</string>
+
+    <string name="info_activity_title">UsbGps - 概要</string>
+
+    <string name="pref_start_on_boot_summary_on">Android 起動時に USB GPS サービスを開始します</string>
+    <string name="pref_start_on_boot_summary_off">Android 起動時に USB GPS サービスを開始しません</string>
+    <string name="pref_start_on_boot_title">起動時にサービスを開始</string>
+
+    <string name="pref_category_device_title">デバイス</string>
+    <string name="pref_category_service_title">サービス</string>
+    <string name="pref_category_sirf_title">SiRF</string>
+    <string name="pref_category_nmea_log_title">NMEAログ</string>
+    <string name="pref_category_debug_title">デバッグ</string>
+    <string name="pref_category_other">その他</string>
+    <string name="pref_set_time_key">setTime</string>
+    <string name="pref_set_time_summary_on">時間情報を受信した際、システム時刻をGPS時刻に同期します</string>
+    <string name="pref_set_time_summary_off">システム時刻をGPS時刻に同期しません</string>
+    <string name="pref_set_time_title">GPS時刻からシステム時刻を設定 (要Root権限)</string>
+    <string name="pref_category_about_title">このアプリについて</string>
+    <string name="warning_set_time_needs_su">時刻設定機能には SU (Root) 権限が必要です</string>
+    <string name="warning_no_developer_options">開発者向けオプションを先に有効にする必要があります</string>
+    <string name="gps_time_placeholder">GPS時刻: %1$s\nシステム時刻: %2$s</string>
+    <string name="button_open_mock_location_settings">仮の位置情報設定を開く</string>
+    <string name="error_location_permission_required">UsbGps が機能するには位置情報の権限が必要です</string>
+    <string name="error_storage_permission_required">トラックファイルを書き込むには、ストレージの権限が必要です</string>
+    <string name="settings_button_title">設定</string>
+    <string name="pref_start_on_boot_summary">有効にすると、Android起動時にUSB GPSサービスが自動的に開始されます</string>
+    <string name="pref_set_time_summary">受信したGPS時刻からシステム時刻を設定します</string>
+    <string name="pref_daynight_theme_title">自動デイ・ナイトテーマ</string>
+    <string name="pref_daynight_theme_summary">日中はライトテーマ、夜間はダークテーマを表示します</string>
+    <string name="pref_daynight_theme_key">dayNightMode</string>
+
+    <string name="pref_language_title">言語 / Language</string>
+    <string name="pref_language_summary">アプリの表示言語を選択します / Choose app language</string>
+    <string-array name="pref_language_entries">
+        <item>システム標準 / System Default</item>
+        <item>English</item>
+        <item>日本語</item>
+    </string-array>
+    <string-array name="pref_language_values">
+        <item>default</item>
+        <item>en</item>
+        <item>ja</item>
+    </string-array>
+</resources>

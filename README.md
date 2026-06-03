@@ -1,116 +1,64 @@
 <img align="right" alt="App icon" src="app-icon.png" height="115px">
 
-# UsbGps4Droid - A USB GPS provider for Android 
+# UsbGps4Droid-J - A USB GPS provider for Android (Japanese and English Edition)
 
-UsbGps4Droid is a USB GPS provider application for the Android operating system,
-providing GPS support for devices down to android 4.0
+**UsbGps4Droid-J** は、Androidオペレーティングシステム用の外部USB GPSレシーバー接続・供給アプリケーションです。  
+オリジナル原作者および前維持者への深い敬意を表し、GPL-3.0ライセンスを遵守した上で、日本のユーザー向けに完全日本語化とアプリ内での任意言語切り替え機能を備え、JavaからKotlinへ完全移行したアップグレード版です。
 
-[Download latest release](../../releases)
+---
 
-## About
-The application provides location updates to Android which allows devices without 
-an internal GPS to still use applications which require GPS (Google Maps navigation).
+## 🌟 Features of UsbGps4Droid-J / 本フォーク（-J）の特徴
 
-I use this USB Gps with my Android Tablet Headunit, because the internal GPS does 
-not work reliably. I have a [main controller](https://github.com/freshollie/AndroidHeadunitController/) 
-which automatically starts this application's background service when my car starts
+1. **Complete Japanese Localization / 完全日本語対応**
+   - すべてのメニュー、設定項目、メッセージ、エラー表示を自然な日本語にローカライズしました。
 
-The application is designed to work with any SiRF USB GPS device, however it has been 
-tested as working with [GlobalSat BU-353-S4](http://usglobalsat.com/p-688-bu-353-s4.aspx) and
-[a device based on the UBLOX LEA-M8P chip](../../issues/7).
+2. **Anytime Language Switching / 任意の言語切り替え**
+   - システム設定に依存せず、アプリの設定画面からいつでも「日本語」「英語」「システムデフォルト」を相互に切り替えることができます。
 
-## Features
-- Android 6.0+ Permission handling
-- Ability to pick which USB device is the GPS
-- Automatic start on reboot
-- User interface with readings from the USB GPS and a log showing NMEA data coming from the GPS
-- Abilty to sync android device time with GPS time (Requires root)
-- Support for any SiRF USB GPS device
+3. **Kotlin Migration / Kotlinへの完全移行**
+   - 既存のJavaコードを100% Kotlinコードに置き換え、Null安全性の向上とプログラムの堅牢化を実現しました。
 
-## Usage
+---
+
+## 📜 Credits and Respect to Original Authors / 原作者・前維持者への敬意と公式URL
+
+本プロジェクトは、以下の素晴らしい開発者の方々の功績に支えられています。ここに最大の敬意と感謝を表します。
+
+### 1. Herbert von Broeuschmeul (Original Creator)
+- 2011年にこの素晴らしいUSB GPS連携の仕組みを考案・作成されたオリジナル開発者です。
+- **Original Source Code**: [Herbert\'s Source Code / 公式アーカイブ]
+
+### 2. Oliver Bell (freshollie)
+- 現代のAndroid OS（Android 5.x / 6.x）やパーミッション管理（ランタイムパーミッション）に対応させ、フォーク版を維持・改良した前開発者です。
+- **Forked Repository**: [freshollie/UsbGps4Droid](https://github.com/freshollie/UsbGps4Droid)
+
+---
+
+## ⚖️ License / ライセンスについて
+
+本ソフトウェアは **GPL v3 (GNU General Public License v3)** のもとで公開されているオープンソースソフトウェアです。
+
+- **License**: [GPL v3](LICENSE)
+- 二次配布や改変を行う場合は、GPL-3.0ライセンスの規約を厳格に遵守する必要があります。元の著作権表示を維持し、ソースコードを公開する義務があります。
+- ソースコードは以下のGitHubリポジトリで公開されています：
+  **GitHub**: [https://github.com/iwa-kasoutuuuuuka/UsbGps4Droid-J](https://github.com/iwa-kasoutuuuuuka/UsbGps4Droid-J)
+
+---
+
+## 🛠️ Usage / 使用方法
 
 ### USB Permissions Popup
-**Unless your ROM is modified then Android will ask permission to use your USB GPS device 
-everytime you reconnect it**
+Androidの標準セキュリティ制限により、USBデバイスが抜き差しされる度に「USBデバイスの使用許可」を求めるポップアップが表示されます。
 
-If your device is rooted, then you can follow [this tutorial](https://stackoverflow.com/a/30563253/1741602) 
-in order to surpress the USB permission popup system wide and grant permission everytime automatically.
+- **Root化されたデバイスの場合**:  
+  システムのポップアップを抑止し、自動的にパーミッションを付与する手法を適用可能です。
+- **未Rootデバイスの場合**:  
+  差し込む度にポップアップの許可をタップする必要があります。これはAndroid OSの仕様制限です。
 
-If your device is not rooted, then there is nothing I can do. This is unfortunately a limitation of 
-the android operating system. If this is for an embedded system I highly recommend rooting the device
-and following the tutoial.
-
-### Connecting a USB GPS to your device
-- A USB GPS device can connect to an Android device's charging port, with a USB OTG adapter, if your device supports 
-[USB OTG](https://en.wikipedia.org/wiki/USB_On-The-Go)
-
-- If your device has normal USB ports (Raspberry PI, computer...) then an OTG adapter is not required.
-
-### Disclaimer
-This app has only been tested on 2 of my devices, running Android 5.1 and 6.0. Any issues with 
-this app on your device, please create a  [github issue](../../issues) and I will resolve the 
-problem as soon as possible.
-
-### Service behaviour 
-The application's background service can be set to start when the device turns on. 
-Currently the service does not automatically start when the GPS device is plugged 
-into the Android device due to more unwanted usb popups.
-
-For now the background service can be manually started with a start service intent.
-
-```java
-Intent intent = new Intent();
-intent.setComponent(
-	new Component(
-		"org.broeuschmeul.android.gps.usb.provider",
-		"org.broeuschmeul.android.gps.usb.provider.driver.USBGpsProviderService"
-	)
-)
-intent.setAction("org.broeuschmeul.android.gps.usb.provider.action.START_GPS_PROVIDER")
-```
-
-Or via a shell command as root.
+### Service behavior / サービスの動作
+アプリのバックグラウンドサービスは、デバイスの起動時（Boot完了時）に自動的に開始するように設定可能です。  
+また、シェルコマンド（Root権限）やIntent経由で直接開始させることも可能です。
 
 ```bash
 am startservice -a org.broeuschmeul.android.gps.usb.provider.action.START_GPS_PROVIDER -n org.broeuschmeul.android.gps.usb.provider/.driver.USBGpsProviderService
 ```
-
-The background service will automatically close itself when the USB device is disconnected for too long.
-
-## Contributing
-
-Any contributions welcome. Please fork this repository and create a pull request notifying your changes and why.
-
-## Screenshots
-
-### Landscape tablet
-<p align="center">
-    <img src="fastlane/metadata/android/en-US/images/sevenInchScreenshots/2.png" align="center" alt="Main interface marshmallow" width="800"/>
-</p>
-
-#### Android 3.1 interface
-<p align="center">
-    <img src="fastlane/metadata/android/en-US/images/sevenInchScreenshots/3.png" align="center" alt="Main interface honeycomb" width="800"/>
-</p>
-
-### Portrait
-<p align="center">
-    <img src="fastlane/metadata/android/en-US/images/sevenInchScreenshots/1.png" align="center" alt="Main interface portait" width="400"/>
-</p>
-
-### Device selection
-<p align="center">
-    <img src="fastlane/metadata/android/en-US/images/sevenInchScreenshots/4.png" align="center" alt="Device choice settings" width="800"/>
-</p>
-
-## Credits
-Originally written by Herbert von Broeuschmeul, and I have taken over maintaining this 
-Project (Which was originally written in 2011). You can find his orginal project at 
-the top of this fork.
-
-The Herbert's unmaintained version does not work on the newer android operating systems, 
-and has several bugs with the main usb algorithm.
-
-## License
-
-`GPL v3`

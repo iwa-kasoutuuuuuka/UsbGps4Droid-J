@@ -133,5 +133,13 @@
         android:summary="@string/pref_daynight_theme_summary"
         android:defaultValue="true"
         />
+    <ListPreference
+        android:key="@string/pref_language_key"
+        android:title="@string/pref_language_title"
+        android:summary="@string/pref_language_summary"
+        android:entries="@array/pref_language_entries"
+        android:entryValues="@array/pref_language_values"
+        android:defaultValue="@string/defaultLanguage"
+        />
 
 </PreferenceScreen>
