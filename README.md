@@ -7,6 +7,12 @@
 
 ---
 
+## 📦 APKのダウンロード (Downloads)
+ビルド済みのAPKファイルは、以下のGitHub Releasesページからダウンロードできます：  
+👉 **[UsbGps4Droid-J Releases (v2.3.0)](https://github.com/iwa-kasoutuuuuuka/UsbGps4Droid-J/releases/tag/v2.3.0)**
+
+---
+
 ## 🎯 用途・何に使えるのか (Use Cases / What is it used for?)
 
 本アプリは、以下のようなシチュエーションや目的で非常に役に立ちます：
