@@ -26,7 +26,7 @@
 
 ### 1. Herbert von Broeuschmeul (Original Creator)
 - 2011年にこの素晴らしいUSB GPS連携の仕組みを考案・作成されたオリジナル開発者です。
-- **Original Source Code**: [Herbert\'s Source Code / 公式アーカイブ]
+- **Original Source Code**: [Herbert\'s Source Code / 公式アーカイブ](https://github.com/HvB/UsbGps4Droid)
 
 ### 2. Oliver Bell (freshollie)
 - 現代のAndroid OS（Android 5.x / 6.x）やパーミッション管理（ランタイムパーミッション）に対応させ、フォーク版を維持・改良した前開発者です。
