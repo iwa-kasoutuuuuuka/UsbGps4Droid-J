@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AppOpsManager
 import android.app.Notification
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
@@ -544,7 +545,19 @@ class USBGpsManager(
             pendingFlags
         )
 
-        connectionProblemNotificationBuilder = NotificationCompat.Builder(appContext)
+        val channelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "service_notification",
+                appContext.getString(R.string.app_name),
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            notificationManager.createNotificationChannel(channel)
+            "service_notification"
+        } else {
+            ""
+        }
+
+        connectionProblemNotificationBuilder = NotificationCompat.Builder(appContext, channelId)
             .setContentIntent(stopPendingIntent)
             .setSmallIcon(R.drawable.ic_stat_notify)
 
@@ -556,7 +569,7 @@ class USBGpsManager(
             pendingFlags
         )
 
-        serviceStoppedNotificationBuilder = NotificationCompat.Builder(appContext)
+        serviceStoppedNotificationBuilder = NotificationCompat.Builder(appContext, channelId)
             .setContentIntent(restartPendingIntent)
             .setSmallIcon(R.drawable.ic_stat_notify)
             .setContentTitle(appContext.getString(R.string.service_closed_because_connection_problem_notification_title))
