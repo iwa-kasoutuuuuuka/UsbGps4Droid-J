@@ -123,13 +123,12 @@ class USBGpsProviderService : Service(), USBGpsManager.NmeaListener, LocationLis
                             .apply()
 
                         val builder: NotificationCompat.Builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            notificationManager.createNotificationChannel(
-                                NotificationChannel(
-                                    NOTIFICATION_CHANNEL_ID,
-                                    getString(R.string.app_name),
-                                    NotificationManager.IMPORTANCE_HIGH
-                                )
+                            val channel = NotificationChannel(
+                                NOTIFICATION_CHANNEL_ID,
+                                getString(R.string.app_name),
+                                NotificationManager.IMPORTANCE_HIGH
                             )
+                            notificationManager.createNotificationChannel(channel)
                             NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                         } else {
                             NotificationCompat.Builder(this, "")
