@@ -256,6 +256,27 @@ public class NmeaParser {
         hasRMC = false;
 
         if (fix != null) {
+            // Apply speed filter (soft drift prevention)
+            android.content.SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(appContext);
+            boolean isSpeedFilterEnabled = prefs.getBoolean(appContext.getString(org.broeuschmeul.android.gps.usb.provider.R.string.pref_speed_filter_key), false);
+            if (isSpeedFilterEnabled && fix.hasSpeed()) {
+                float thresholdKmh = 1.0f;
+                try {
+                    String thresholdStr = prefs.getString(appContext.getString(org.broeuschmeul.android.gps.usb.provider.R.string.pref_speed_filter_threshold_key), "1.0");
+                    thresholdKmh = Float.parseFloat(thresholdStr);
+                } catch (Exception e) {
+                    // fallback
+                }
+                // speed is in m/s, convert threshold (km/h) to m/s
+                float thresholdMs = thresholdKmh / 3.6f;
+                if (fix.getSpeed() < thresholdMs) {
+                    // Suppress location update to prevent drift, but keep notifyNewSentence active for debug
+                    log("Speed filter suppressed fix: speed=" + (fix.getSpeed() * 3.6f) + " km/h, threshold=" + thresholdKmh);
+                    this.fix = null;
+                    return;
+                }
+            }
+
             ((USBGpsApplication) appContext).notifyNewLocation(fix);
             log("New Fix: " + System.currentTimeMillis() + " " + fix);
 

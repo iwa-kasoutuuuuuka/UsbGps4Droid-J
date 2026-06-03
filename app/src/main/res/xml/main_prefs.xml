@@ -96,6 +96,23 @@
         />
 
     <PreferenceCategory
+        android:title="@string/pref_speed_filter_title"
+        />
+    <SwitchPreference
+        android:key="@string/pref_speed_filter_key"
+        android:title="@string/pref_speed_filter_title"
+        android:summary="@string/pref_speed_filter_summary"
+        android:defaultValue="false"
+        />
+    <EditTextPreference
+        android:dependency="@string/pref_speed_filter_key"
+        android:key="@string/pref_speed_filter_threshold_key"
+        android:title="@string/pref_speed_filter_threshold_title"
+        android:summary="@string/pref_speed_filter_threshold_summary"
+        android:defaultValue="@string/defaultSpeedFilterThreshold"
+        />
+
+    <PreferenceCategory
         android:title="@string/pref_category_nmea_log_title"
         />
     <SwitchPreference

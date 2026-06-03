@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <EditTextPreference
-        android:defaultValue="@string/defaultTrackFileDirectory"
-        android:key="@string/pref_trackfile_directory_key"
-        android:summary="@string/pref_trackfile_directory_summary"
-        android:title="@string/pref_trackfile_directory_title" />
+    <Preference
+        android:key="@string/pref_trackfile_saf_directory_key"
+        android:title="@string/pref_trackfile_saf_directory_title"
+        android:summary="@string/pref_trackfile_saf_directory_not_selected" />
     <EditTextPreference
         android:defaultValue="@string/defaultTrackFilePrefix"
         android:key="@string/pref_trackfile_prefix_key"
         android:summary="@string/pref_trackfile_prefix_summary"
         android:title="@string/pref_trackfile_prefix_title" />
+    <SwitchPreference
+        android:key="@string/pref_save_gpx_key"
+        android:title="@string/pref_save_gpx_title"
+        android:summary="@string/pref_save_gpx_summary"
+        android:defaultValue="true" />
 </PreferenceScreen>

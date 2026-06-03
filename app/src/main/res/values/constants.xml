@@ -98,4 +98,12 @@
     <string name="sirf_software_version">8400</string>
     <string name="pref_language_key">appLanguage</string>
     <string name="defaultLanguage">default</string>
+
+    <!-- New Feature Keys -->
+    <string name="pref_save_gpx_key">saveGpx</string>
+    <string name="pref_trackfile_saf_directory_key">trackFileSafDirectory</string>
+    <string name="pref_speed_filter_key">speedFilter</string>
+    <string name="pref_speed_filter_threshold_key">speedFilterThreshold</string>
+
+    <string name="defaultSpeedFilterThreshold">1.0</string>
 </resources>

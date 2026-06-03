@@ -191,4 +191,31 @@
         <item>en</item>
         <item>ja</item>
     </string-array>
+
+    <!-- Cockpit UI -->
+    <string name="speed_placeholder">時速: %s km/h</string>
+    <string name="bearing_placeholder">進行方向: %1$s (%2$s°)</string>
+
+    <!-- Speed Filter -->
+    <string name="pref_speed_filter_title">速度フィルタ（ブレ防止）</string>
+    <string name="pref_speed_filter_summary">静止時の現在地の微小なブレ（ドリフト）を防ぐため、設定した速度未満の時は位置情報の更新を抑制します</string>
+    <string name="pref_speed_filter_threshold_title">フィルタしきい値（時速）</string>
+    <string name="pref_speed_filter_threshold_summary">この速度未満の位置情報を無視します: %s km/h</string>
+
+    <!-- GPX / SAF Options -->
+    <string name="pref_save_gpx_title">GPX形式でログを保存</string>
+    <string name="pref_save_gpx_summary">NMEAログ保存時、同時にGPX形式ファイルでも並行して軌跡ログを保存します</string>
+    <string name="pref_trackfile_saf_directory_title">ログ出力先フォルダー（SAF）</string>
+    <string name="pref_trackfile_saf_directory_summary">フォルダピッカーを使用して出力先を選択します。現在のフォルダー: %s</string>
+    <string name="pref_trackfile_saf_directory_not_selected">未設定。タップしてフォルダを選択してください。</string>
+
+    <!-- Bearing Cardinal Directions (Japanese) -->
+    <string name="bearing_n">北</string>
+    <string name="bearing_ne">北東</string>
+    <string name="bearing_e">東</string>
+    <string name="bearing_se">南東</string>
+    <string name="bearing_s">南</string>
+    <string name="bearing_sw">南西</string>
+    <string name="bearing_w">西</string>
+    <string name="bearing_nw">北西</string>
 </resources>

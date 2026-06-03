@@ -450,13 +450,45 @@ class USBGpsSettingsFragment : PreferenceFragmentCompat(),
         }
     }
 
-    class RecordingPreferences : PreferenceFragmentCompat() {
+    class RecordingPreferences : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener {
+        private lateinit var sharedPrefs: SharedPreferences
+
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
         }
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            sharedPrefs = preferenceManager.sharedPreferences ?: PreferenceManager.getDefaultSharedPreferences(requireContext())
+            sharedPrefs.registerOnSharedPreferenceChangeListener(this)
             addPreferencesFromResource(R.xml.recording_prefs)
+            updateSafSummary()
+
+            findPreference<Preference>(getString(R.string.pref_trackfile_saf_directory_key))?.setOnPreferenceClickListener {
+                (activity as? USBGpsBaseActivity)?.openSafFolderPicker()
+                true
+            }
+        }
+
+        override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+            if (key == getString(R.string.pref_trackfile_saf_directory_key)) {
+                updateSafSummary()
+            }
+        }
+
+        private fun updateSafSummary() {
+            val key = getString(R.string.pref_trackfile_saf_directory_key)
+            val uriStr = sharedPrefs.getString(key, null)
+            val pref = findPreference<Preference>(key)
+            if (uriStr.isNullOrEmpty()) {
+                pref?.summary = getString(R.string.pref_trackfile_saf_directory_not_selected)
+            } else {
+                pref?.summary = getString(R.string.pref_trackfile_saf_directory_summary, uriStr)
+            }
+        }
+
+        override fun onDestroy() {
+            sharedPrefs.unregisterOnSharedPreferenceChangeListener(this)
+            super.onDestroy()
         }
     }
 

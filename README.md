@@ -39,6 +39,18 @@
 3. **Kotlin Migration / Kotlinへの完全移行**
    - 既存のJavaコードを100% Kotlinコードに置き換え、Null安全性の向上とプログラムの堅牢化を実現しました。
 
+4. **Storage Access Framework (SAF) Support / 現代的な保存フォルダ選択**
+   - Android 10 以降のフォルダ保存制限に対応し、フォルダピッカーを用いて安全に保存先フォルダを任意に選択・永続アクセス権限の取得が可能になりました。
+
+5. **Speed Filter (Drift Prevention) / 速度フィルタ機能**
+   - 静止時のGPS位置の小刻みなブレ（ドリフト）を抑制するソフトウェアフィルタを実装。しきい値速度（km/h）を設定し、それ未満の極低速・静止時に現在地の微小なふらつきを防ぎます。
+
+6. **Simultaneous GPX Tracking / GPX形式の並行自動保存**
+   - NMEAログ保存時、同時に汎用的なGPX形式ファイルでも自動保存されるため、Google Earthなどの他アプリやGPSログビューアーにそのままインポートして軌跡を確認できます。
+
+7. **Cockpit UI Dashboard / コックピット風ステータス表示**
+   - メインステータス画面に現在の「時速 (km/h)」および「進行方位（日本語方角＋角度）」を視覚的に分かりやすく表示するダッシュボードレイアウトを追加しました。
+
 ---
 
 ## 📜 Credits and Respect to Original Authors / 原作者・前維持者への敬意と公式URL
@@ -47,7 +59,7 @@
 
 ### 1. Herbert von Broeuschmeul (Original Creator)
 - 2011年にこの素晴らしいUSB GPS連携の仕組みを考案・作成されたオリジナル開発者です。
-- **Original Source Code**: [Herbert\'s Source Code / 公式アーカイブ](https://github.com/HvB/UsbGps4Droid)
+- **Original Source Code**: [Herbert's Source Code / 公式アーカイブ](https://github.com/HvB/UsbGps4Droid)
 
 ### 2. Oliver Bell (freshollie)
 - 現代のAndroid OS（Android 5.x / 6.x）やパーミッション管理（ランタイムパーミッション）に対応させ、フォーク版を維持・改良した前開発者です。

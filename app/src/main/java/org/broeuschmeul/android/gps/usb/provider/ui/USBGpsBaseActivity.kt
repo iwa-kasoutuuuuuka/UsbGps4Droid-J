@@ -42,6 +42,29 @@ abstract class USBGpsBaseActivity : AppCompatActivity(),
     private var lastDaynightSetting = false
     private var lastLanguageSetting = "default"
 
+    // SAF Directory request launcher
+    private val openDocumentTreeLauncher = registerForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.OpenDocumentTree()
+    ) { uri ->
+        uri?.let {
+            contentResolver.takePersistableUriPermission(
+                it,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            )
+            saveSafDirectory(it.toString())
+        }
+    }
+
+    fun openSafFolderPicker() {
+        openDocumentTreeLauncher.launch(null)
+    }
+
+    private fun saveSafDirectory(uriString: String) {
+        sharedPreferences.edit()
+            .putString(getString(R.string.pref_trackfile_saf_directory_key), uriString)
+            .apply()
+    }
+
     override fun attachBaseContext(newBase: Context) {
         // 多言語ロケールを反映したContextを適用します
         super.attachBaseContext(LocaleHelper.onAttach(newBase))

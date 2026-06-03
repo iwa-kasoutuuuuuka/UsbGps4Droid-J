@@ -102,12 +102,36 @@
                 />
 
             <TextView
+                android:id="@+id/speed_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/speed_placeholder"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textStyle="bold"
+                android:textColor="?android:attr/colorAccent"
+                app:layout_constraintTop_toBottomOf="@id/elevation_text"
+                />
+
+            <TextView
+                android:id="@+id/bearing_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/bearing_placeholder"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textStyle="bold"
+                android:textColor="?android:attr/colorAccent"
+                app:layout_constraintTop_toBottomOf="@id/speed_text"
+                />
+
+            <TextView
                 android:id="@+id/gps_time_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/location_text"
                 android:text="@string/gps_time_placeholder"
-                app:layout_constraintTop_toBottomOf="@id/location_text"
+                app:layout_constraintTop_toBottomOf="@id/bearing_text"
                 app:layout_constraintRight_toRightOf="parent"
                 />
 

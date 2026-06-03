@@ -197,4 +197,31 @@
         <item>en</item>
         <item>ja</item>
     </string-array>
+
+    <!-- Cockpit UI -->
+    <string name="speed_placeholder">Speed: %s km/h</string>
+    <string name="bearing_placeholder">Bearing: %1$s (%2$s°)</string>
+
+    <!-- Speed Filter -->
+    <string name="pref_speed_filter_title">Speed Filter (Drift Prevention)</string>
+    <string name="pref_speed_filter_summary">Suppress location updates when moving below threshold speed to prevent drifting while stationary</string>
+    <string name="pref_speed_filter_threshold_title">Filter Threshold Speed</string>
+    <string name="pref_speed_filter_threshold_summary">Location updates below this speed will be ignored: %s km/h</string>
+
+    <!-- GPX / SAF Options -->
+    <string name="pref_save_gpx_title">Save GPX Log</string>
+    <string name="pref_save_gpx_summary">Simultaneously record GPS track in GPX format alongside NMEA</string>
+    <string name="pref_trackfile_saf_directory_title">Output Directory (SAF)</string>
+    <string name="pref_trackfile_saf_directory_summary">Select output directory using folder picker. Current Uri: %s</string>
+    <string name="pref_trackfile_saf_directory_not_selected">Not selected. Click to choose folder.</string>
+
+    <!-- Bearing Cardinal Directions -->
+    <string name="bearing_n">N</string>
+    <string name="bearing_ne">NE</string>
+    <string name="bearing_e">E</string>
+    <string name="bearing_se">SE</string>
+    <string name="bearing_s">S</string>
+    <string name="bearing_sw">SW</string>
+    <string name="bearing_w">W</string>
+    <string name="bearing_nw">NW</string>
 </resources>

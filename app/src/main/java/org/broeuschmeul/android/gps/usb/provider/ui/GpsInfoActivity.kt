@@ -36,6 +36,8 @@ class GpsInfoActivity : USBGpsBaseActivity(), USBGpsApplication.ServiceDataListe
     private lateinit var accuracyText: TextView
     private lateinit var locationText: TextView
     private lateinit var elevationText: TextView
+    private lateinit var speedText: TextView
+    private lateinit var bearingText: TextView
     private lateinit var logText: TextView
     private lateinit var timeText: TextView
     private lateinit var logTextScroller: ScrollView
@@ -76,6 +78,8 @@ class GpsInfoActivity : USBGpsBaseActivity(), USBGpsApplication.ServiceDataListe
         accuracyText = findViewById(R.id.accuracy_text)
         locationText = findViewById(R.id.location_text)
         elevationText = findViewById(R.id.elevation_text)
+        speedText = findViewById(R.id.speed_text)
+        bearingText = findViewById(R.id.bearing_text)
         timeText = findViewById(R.id.gps_time_text)
 
         logText = findViewById(R.id.log_box)
@@ -86,6 +90,21 @@ class GpsInfoActivity : USBGpsBaseActivity(), USBGpsApplication.ServiceDataListe
         val configuration = resources.configuration
         return (configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE &&
                 configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    }
+
+    private fun getCardinalDirection(bearing: Float): String {
+        val directions = arrayOf(
+            getString(R.string.bearing_n),
+            getString(R.string.bearing_ne),
+            getString(R.string.bearing_e),
+            getString(R.string.bearing_se),
+            getString(R.string.bearing_s),
+            getString(R.string.bearing_sw),
+            getString(R.string.bearing_w),
+            getString(R.string.bearing_nw)
+        )
+        val index = ((bearing + 22.5) % 360 / 45).toInt()
+        return directions[index % 8]
     }
 
     private fun updateData() {
@@ -100,6 +119,9 @@ class GpsInfoActivity : USBGpsBaseActivity(), USBGpsApplication.ServiceDataListe
         var lat = "N/A"
         var lon = "N/A"
         var elevation = "N/A"
+        var speedVal = "N/A"
+        var bearingVal = "N/A"
+        var bearingDegree = "N/A"
         var gpsTime = "N/A"
         var systemTime = "N/A"
 
@@ -118,6 +140,15 @@ class GpsInfoActivity : USBGpsBaseActivity(), USBGpsApplication.ServiceDataListe
             lon = df.format(location.longitude)
             elevation = location.altitude.toString()
 
+            if (location.hasSpeed()) {
+                val speedKmh = location.speed * 3.6f
+                speedVal = DecimalFormat("#.#").format(speedKmh)
+            }
+            if (location.hasBearing()) {
+                bearingDegree = DecimalFormat("#").format(location.bearing)
+                bearingVal = getCardinalDirection(location.bearing)
+            }
+
             gpsTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US)
                 .format(Date(location.time))
 
@@ -131,6 +162,8 @@ class GpsInfoActivity : USBGpsBaseActivity(), USBGpsApplication.ServiceDataListe
         accuracyText.text = getString(R.string.accuracy_placeholder, accuracyValue)
         locationText.text = getString(R.string.location_placeholder, lat, lon)
         elevationText.text = getString(R.string.elevation_placeholder, elevation)
+        speedText.text = getString(R.string.speed_placeholder, speedVal)
+        bearingText.text = getString(R.string.bearing_placeholder, bearingVal, bearingDegree)
         timeText.text = getString(R.string.gps_time_placeholder, gpsTime, systemTime)
         updateLog()
     }

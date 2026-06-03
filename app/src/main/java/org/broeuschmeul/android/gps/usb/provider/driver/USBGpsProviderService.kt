@@ -29,6 +29,7 @@ import org.broeuschmeul.android.gps.usb.provider.R
 import org.broeuschmeul.android.gps.usb.provider.ui.GpsInfoActivity
 import org.broeuschmeul.android.gps.usb.provider.ui.USBGpsSettingsFragment
 import org.broeuschmeul.android.gps.usb.provider.util.LocaleHelper
+import org.broeuschmeul.android.gps.usb.provider.USBGpsApplication
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -265,22 +266,72 @@ class USBGpsProviderService : Service(), USBGpsManager.NmeaListener, LocationLis
         }
     }
 
+    private var gpxWriter: PrintWriter? = null
+    private var gpxLogger: org.broeuschmeul.android.gps.usb.provider.util.GpxLogger? = null
+
     private fun beginTrack() {
         @SuppressLint("SimpleDateFormat")
-        val fmt = SimpleDateFormat("_yyyy-MM-dd_HH-mm-ss'.nmea'")
+        val fmt = SimpleDateFormat("_yyyy-MM-dd_HH-mm-ss")
 
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val trackFilePrefix = sharedPreferences.getString(
+            PREF_TRACK_FILE_PREFIX,
+            this.getString(R.string.defaultTrackFilePrefix)
+        ) ?: "usbnmeatrack"
+        val saveGpx = sharedPreferences.getBoolean(getString(R.string.pref_save_gpx_key), true)
+
+        val safUriStr = sharedPreferences.getString(getString(R.string.pref_trackfile_saf_directory_key), null)
+
+        val baseFileName = trackFilePrefix + fmt.format(Date())
+
+        if (!safUriStr.isNullOrEmpty()) {
+            try {
+                val treeUri = android.net.Uri.parse(safUriStr)
+                val treeDocument = androidx.documentfile.provider.DocumentFile.fromTreeUri(this, treeUri)
+                if (treeDocument != null && treeDocument.exists()) {
+                    // Create NMEA file
+                    val nmeaFile = treeDocument.createFile("application/octet-stream", "$baseFileName.nmea")
+                    if (nmeaFile != null) {
+                        val pfd = contentResolver.openFileDescriptor(nmeaFile.uri, "w")
+                        if (pfd != null) {
+                            writer = PrintWriter(BufferedWriter(FileWriter(pfd.fileDescriptor)))
+                            preludeWritten = true
+                            log("Created NMEA log via SAF: $baseFileName.nmea")
+                        }
+                    }
+                    // Create GPX file if enabled
+                    if (saveGpx) {
+                        val gpxDoc = treeDocument.createFile("application/octet-stream", "$baseFileName.gpx")
+                        if (gpxDoc != null) {
+                            val pfdGpx = contentResolver.openFileDescriptor(gpxDoc.uri, "w")
+                            if (pfdGpx != null) {
+                                gpxWriter = PrintWriter(BufferedWriter(FileWriter(pfdGpx.fileDescriptor)))
+                                gpxLogger = org.broeuschmeul.android.gps.usb.provider.util.GpxLogger(gpxWriter!!)
+                                gpxLogger?.writeHeader()
+                                log("Created GPX log via SAF: $baseFileName.gpx")
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(LOG_TAG, "Error creating track files via SAF", e)
+                // Fallback to legacy path if SAF fails
+                beginTrackLegacy(baseFileName, saveGpx)
+            }
+        } else {
+            beginTrackLegacy(baseFileName, saveGpx)
+        }
+    }
+
+    private fun beginTrackLegacy(baseFileName: String, saveGpx: Boolean) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val trackDirName = sharedPreferences.getString(
             PREF_TRACK_FILE_DIR,
             this.getString(R.string.defaultTrackFileDirectory)
         ) ?: "/sdcard/nmea"
-        val trackFilePrefix = sharedPreferences.getString(
-            PREF_TRACK_FILE_PREFIX,
-            this.getString(R.string.defaultTrackFilePrefix)
-        ) ?: "usbnmeatrack"
-
-        trackFile = File(trackDirName, trackFilePrefix + fmt.format(Date()))
-        log("Writing the prelude of the NMEA file: ${trackFile!!.absolutePath}")
+        
+        trackFile = File(trackDirName, "$baseFileName.nmea")
+        log("Writing legacy NMEA file: ${trackFile!!.absolutePath}")
         val trackDir = trackFile!!.parentFile
         try {
             if (!trackDir.mkdirs() && !trackDir.isDirectory) {
@@ -288,19 +339,31 @@ class USBGpsProviderService : Service(), USBGpsManager.NmeaListener, LocationLis
             }
             writer = PrintWriter(BufferedWriter(FileWriter(trackFile!!)))
             preludeWritten = true
+
+            if (saveGpx) {
+                val gpxFile = File(trackDirName, "$baseFileName.gpx")
+                gpxWriter = PrintWriter(BufferedWriter(FileWriter(gpxFile)))
+                gpxLogger = org.broeuschmeul.android.gps.usb.provider.util.GpxLogger(gpxWriter!!)
+                gpxLogger?.writeHeader()
+            }
         } catch (e: IOException) {
-            Log.e(LOG_TAG, "Error while writing the prelude of the NMEA file: ${trackFile!!.absolutePath}", e)
+            Log.e(LOG_TAG, "Error writing legacy track files", e)
             stopSelf()
         }
     }
 
     private fun endTrack() {
-        if (trackFile != null && writer != null) {
-            log("Ending the NMEA file: ${trackFile!!.absolutePath}")
+        if (writer != null) {
+            log("Ending the track files")
             preludeWritten = false
             writer?.close()
             writer = null
             trackFile = null
+
+            gpxLogger?.writeFooter()
+            gpxWriter?.close()
+            gpxWriter = null
+            gpxLogger = null
         }
     }
 
@@ -309,7 +372,7 @@ class USBGpsProviderService : Service(), USBGpsManager.NmeaListener, LocationLis
             beginTrack()
         }
         log("Adding data in the NMEA file: $data")
-        if (trackFile != null && writer != null) {
+        if (writer != null) {
             writer?.print(data)
         }
     }
@@ -319,7 +382,11 @@ class USBGpsProviderService : Service(), USBGpsManager.NmeaListener, LocationLis
         return null
     }
 
-    override fun onLocationChanged(location: Location) {}
+    override fun onLocationChanged(location: Location) {
+        if (preludeWritten) {
+            gpxLogger?.writeTrackPoint(location)
+        }
+    }
 
     override fun onProviderDisabled(provider: String) {
         log("The GPS has been disabled.....stopping the NMEA tracker service.")
@@ -332,6 +399,11 @@ class USBGpsProviderService : Service(), USBGpsManager.NmeaListener, LocationLis
 
     override fun onNmeaReceived(timestamp: Long, data: String) {
         addNMEAString(data)
+        // Extract Location from NMEA parsing and call onLocationChanged
+        val lastLoc = (application as org.broeuschmeul.android.gps.usb.provider.USBGpsApplication).lastLocation
+        if (lastLoc != null && lastLoc.time >= timestamp - 2000) {
+            onLocationChanged(lastLoc)
+        }
     }
 
     private fun log(message: String) {
