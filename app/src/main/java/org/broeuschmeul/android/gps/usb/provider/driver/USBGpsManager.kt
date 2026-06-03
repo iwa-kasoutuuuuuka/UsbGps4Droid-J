@@ -532,11 +532,16 @@ class USBGpsManager(
         }
 
         val stopIntent = Intent(USBGpsProviderService.ACTION_STOP_GPS_PROVIDER)
+        val pendingFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        } else {
+            PendingIntent.FLAG_CANCEL_CURRENT
+        }
         val stopPendingIntent = PendingIntent.getService(
             appContext,
             0,
             stopIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT
+            pendingFlags
         )
 
         connectionProblemNotificationBuilder = NotificationCompat.Builder(appContext)
@@ -548,7 +553,7 @@ class USBGpsManager(
             appContext,
             0,
             restartIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT
+            pendingFlags
         )
 
         serviceStoppedNotificationBuilder = NotificationCompat.Builder(appContext)
@@ -663,11 +668,16 @@ class USBGpsManager(
                             val device = gpsDev
                             if (device != null) {
                                 debugLog("GPS デバイス: ${device.deviceName}")
+                                val permFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    PendingIntent.FLAG_MUTABLE
+                                } else {
+                                    0
+                                }
                                 val permissionIntent = PendingIntent.getBroadcast(
                                     callingService,
                                     0,
                                     Intent(ACTION_USB_PERMISSION),
-                                    0
+                                    permFlags
                                 )
 
                                 if (usbManager.hasPermission(device)) {
@@ -781,12 +791,17 @@ class USBGpsManager(
                     )
                 )
 
+            val pendingFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            } else {
+                PendingIntent.FLAG_CANCEL_CURRENT
+            }
             if (disableReason == R.string.msg_mock_location_disabled) {
                 val mockLocationsSettingsIntent = PendingIntent.getActivity(
                     appContext,
                     0,
                     Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS),
-                    PendingIntent.FLAG_CANCEL_CURRENT
+                    pendingFlags
                 )
 
                 partialServiceStoppedNotification
@@ -804,7 +819,7 @@ class USBGpsManager(
                     appContext,
                     0,
                     Intent(callingService, GpsInfoActivity::class.java),
-                    PendingIntent.FLAG_CANCEL_CURRENT
+                    pendingFlags
                 )
 
                 USBGpsApplication.setLocationNotAsked()

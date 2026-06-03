@@ -106,11 +106,16 @@ class USBGpsProviderService : Service(), USBGpsManager.NmeaListener, LocationLis
                     if (enabled) {
                         gpsManager!!.enableMockLocationProvider(mockProvider)
 
+                        val pendingFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                        } else {
+                            PendingIntent.FLAG_CANCEL_CURRENT
+                        }
                         val launchIntent = PendingIntent.getActivity(
                             this,
                             0,
                             Intent(this, GpsInfoActivity::class.java),
-                            PendingIntent.FLAG_CANCEL_CURRENT
+                            pendingFlags
                         )
 
                         sharedPreferences.edit()
