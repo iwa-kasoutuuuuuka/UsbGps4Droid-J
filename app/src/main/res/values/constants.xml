@@ -106,4 +106,16 @@
     <string name="pref_speed_filter_threshold_key">speedFilterThreshold</string>
 
     <string name="defaultSpeedFilterThreshold">1.0</string>
+
+    <string-array name="pref_gps_device_speed_entry_values">
+        <item>auto</item>
+        <item>1200</item>
+        <item>2400</item>
+        <item>4800</item>
+        <item>9600</item>
+        <item>19200</item>
+        <item>38400</item>
+        <item>57600</item>
+        <item>115200</item>
+    </string-array>
 </resources>

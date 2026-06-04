@@ -39,7 +39,7 @@
         android:dialogTitle="@string/pref_gps_device_speed_title"
         android:enabled="true"
         android:entries="@array/pref_gps_device_speed_values"
-        android:entryValues="@array/pref_gps_device_speed_values"
+        android:entryValues="@array/pref_gps_device_speed_entry_values"
         android:key="@string/pref_gps_device_speed_key"
         android:persistent="true"
         android:title="@string/pref_gps_device_speed_title"

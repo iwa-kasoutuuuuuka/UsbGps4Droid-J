@@ -9,10 +9,10 @@
 
 ## 📦 APKのダウンロード (Downloads)
 ビルド済みのAPKファイルは、以下のGitHub Releasesページからダウンロードできます：  
-👉 **[UsbGps4Droid-J Releases (v2.3.0)](https://github.com/iwa-kasoutuuuuuka/UsbGps4Droid-J/releases/tag/v2.3.0)**
+👉 **[UsbGps4Droid-J Releases (最新: v2.3.1)](https://github.com/iwa-kasoutuuuuuka/UsbGps4Droid-J/releases/latest)**
 
 Pre-built APK files can be downloaded from the GitHub Releases page:  
-👉 **[UsbGps4Droid-J Releases (v2.3.0)](https://github.com/iwa-kasoutuuuuuka/UsbGps4Droid-J/releases/tag/v2.3.0)**
+👉 **[UsbGps4Droid-J Releases (Latest: v2.3.1)](https://github.com/iwa-kasoutuuuuuka/UsbGps4Droid-J/releases/latest)**
 
 ---
 
@@ -159,6 +159,11 @@ am startservice -a org.broeuschmeul.android.gps.usb.provider.action.START_GPS_PR
 ---
 
 ## 🚀 更新履歴 (Changelog)
+
+### v2.3.1
+- **Android 14 (API 34) フォアグラウンドサービス対応**:  
+  Android 14 以降で位置情報タイプのフォアグラウンドサービスを起動する際、`ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION` を明示的に指定する必要がある新制限に対応しました。これにより、Android 14+ 端末でアプリをオンにした際に発生していた強制終了（クラッシュ）を修正しました。  
+  *Fixed crash (force stop) on Android 14+ devices when enabling the GPS service, by explicitly passing `FOREGROUND_SERVICE_TYPE_LOCATION` to `startForeground()` as required by API 34+.*
 
 ### v2.3.0
 - **SAF (Storage Access Framework) サポート**: Android 10 以降の Scoped Storage 環境に対応し、外部ストレージ内のログ保存フォルダを選択・永続許可できるようになりました。

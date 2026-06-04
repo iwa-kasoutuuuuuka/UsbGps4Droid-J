@@ -12,6 +12,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.pm.ServiceInfo
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -89,6 +90,48 @@ class USBGpsProviderService : Service(), USBGpsManager.NmeaListener, LocationLis
         when (intent.action) {
             ACTION_START_GPS_PROVIDER -> {
                 if (gpsManager == null) {
+                    val pendingFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    } else {
+                        PendingIntent.FLAG_CANCEL_CURRENT
+                    }
+                    val launchIntent = PendingIntent.getActivity(
+                        this,
+                        0,
+                        Intent(this, GpsInfoActivity::class.java),
+                        pendingFlags
+                    )
+
+                    val builder: NotificationCompat.Builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        val channel = NotificationChannel(
+                            NOTIFICATION_CHANNEL_ID,
+                            getString(R.string.app_name),
+                            NotificationManager.IMPORTANCE_HIGH
+                        )
+                        notificationManager.createNotificationChannel(channel)
+                        NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                    } else {
+                        NotificationCompat.Builder(this, "")
+                    }
+
+                    val notification = builder
+                        .setContentIntent(launchIntent)
+                        .setSmallIcon(R.drawable.ic_stat_notify)
+                        .setAutoCancel(true)
+                        .setContentTitle(getString(R.string.foreground_service_started_notification_title))
+                        .setContentText(getString(R.string.foreground_gps_provider_started_notification))
+                        .build()
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        startForeground(
+                            R.string.foreground_gps_provider_started_notification,
+                            notification,
+                            ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
+                        )
+                    } else {
+                        startForeground(R.string.foreground_gps_provider_started_notification, notification)
+                    }
+
                     var mockProvider = LocationManager.GPS_PROVIDER
                     if (!sharedPreferences.getBoolean(PREF_REPLACE_STD_GPS, true)) {
                         mockProvider = sharedPreferences.getString(
@@ -107,43 +150,9 @@ class USBGpsProviderService : Service(), USBGpsManager.NmeaListener, LocationLis
                     if (enabled) {
                         gpsManager!!.enableMockLocationProvider(mockProvider)
 
-                        val pendingFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                        } else {
-                            PendingIntent.FLAG_CANCEL_CURRENT
-                        }
-                        val launchIntent = PendingIntent.getActivity(
-                            this,
-                            0,
-                            Intent(this, GpsInfoActivity::class.java),
-                            pendingFlags
-                        )
-
                         sharedPreferences.edit()
                             .putInt(getString(R.string.pref_disable_reason_key), 0)
                             .apply()
-
-                        val builder: NotificationCompat.Builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val channel = NotificationChannel(
-                                NOTIFICATION_CHANNEL_ID,
-                                getString(R.string.app_name),
-                                NotificationManager.IMPORTANCE_HIGH
-                            )
-                            notificationManager.createNotificationChannel(channel)
-                            NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                        } else {
-                            NotificationCompat.Builder(this, "")
-                        }
-
-                        val notification = builder
-                            .setContentIntent(launchIntent)
-                            .setSmallIcon(R.drawable.ic_stat_notify)
-                            .setAutoCancel(true)
-                            .setContentTitle(getString(R.string.foreground_service_started_notification_title))
-                            .setContentText(getString(R.string.foreground_gps_provider_started_notification))
-                            .build()
-
-                        startForeground(R.string.foreground_gps_provider_started_notification, notification)
 
                         showToast(R.string.msg_gps_provider_started)
 
@@ -166,7 +175,9 @@ class USBGpsProviderService : Service(), USBGpsManager.NmeaListener, LocationLis
             }
             ACTION_STOP_TRACK_RECORDING -> {
                 gpsManager?.removeNmeaListener(this)
-                endTrack()
+                Thread {
+                    endTrack()
+                }.start()
                 showToast(getString(R.string.msg_nmea_recording_stopped))
                 if (sharedPreferences.getBoolean(PREF_TRACK_RECORDING, true)) {
                     edit.putBoolean(PREF_TRACK_RECORDING, false)
@@ -212,7 +223,9 @@ class USBGpsProviderService : Service(), USBGpsManager.NmeaListener, LocationLis
             manager.disableMockLocationProvider()
             manager.disable()
         }
-        endTrack()
+        Thread {
+            endTrack()
+        }.start()
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val edit = sharedPreferences.edit()
 
@@ -234,20 +247,25 @@ class USBGpsProviderService : Service(), USBGpsManager.NmeaListener, LocationLis
         if (trackFile == null) {
             if (gpsManager != null) {
                 if (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    beginTrack()
-                    gpsManager!!.addNmeaListener(this)
-                    if (!sharedPreferences.getBoolean(PREF_TRACK_RECORDING, false)) {
-                        edit.putBoolean(PREF_TRACK_RECORDING, true)
-                        edit.apply()
-                    }
-
-                    showToast(R.string.msg_nmea_recording_started)
+                    Thread {
+                        beginTrack()
+                        gpsManager!!.addNmeaListener(this@USBGpsProviderService)
+                        if (!sharedPreferences.getBoolean(PREF_TRACK_RECORDING, false)) {
+                            edit.putBoolean(PREF_TRACK_RECORDING, true)
+                            edit.apply()
+                        }
+                        android.os.Handler(mainLooper).post {
+                            showToast(R.string.msg_nmea_recording_started)
+                        }
+                    }.start()
                 } else {
                     Toast.makeText(this, "UsbGps logger - No storage permission", Toast.LENGTH_SHORT).show()
                     edit.putBoolean(PREF_TRACK_RECORDING, false).apply()
                 }
             } else {
-                endTrack()
+                Thread {
+                    endTrack()
+                }.start()
             }
         } else {
             showToast(R.string.msg_nmea_recording_already_started)

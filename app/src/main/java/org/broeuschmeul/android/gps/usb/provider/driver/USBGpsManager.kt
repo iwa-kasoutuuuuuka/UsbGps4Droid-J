@@ -522,6 +522,13 @@ class USBGpsManager(
             callingService.getString(R.string.defaultGpsDeviceSpeed)
         ) ?: "4800"
 
+        if (deviceSpeed != "auto" && deviceSpeed.toIntOrNull() == null) {
+            deviceSpeed = "auto"
+            sharedPreferences.edit()
+                .putString(USBGpsProviderService.PREF_GPS_DEVICE_SPEED, "auto")
+                .apply()
+        }
+
         shouldSetTime = sharedPreferences.getBoolean(USBGpsProviderService.PREF_SET_TIME, false)
         timeSetAlready = true
 
@@ -532,7 +539,9 @@ class USBGpsManager(
             setLocationManager(this@USBGpsManager.locationManager)
         }
 
-        val stopIntent = Intent(USBGpsProviderService.ACTION_STOP_GPS_PROVIDER)
+        val stopIntent = Intent(USBGpsProviderService.ACTION_STOP_GPS_PROVIDER).apply {
+            setPackage(appContext.packageName)
+        }
         val pendingFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
         } else {
@@ -561,7 +570,9 @@ class USBGpsManager(
             .setContentIntent(stopPendingIntent)
             .setSmallIcon(R.drawable.ic_stat_notify)
 
-        val restartIntent = Intent(USBGpsProviderService.ACTION_START_GPS_PROVIDER)
+        val restartIntent = Intent(USBGpsProviderService.ACTION_START_GPS_PROVIDER).apply {
+            setPackage(appContext.packageName)
+        }
         val restartPendingIntent = PendingIntent.getService(
             appContext,
             0,
@@ -689,7 +700,9 @@ class USBGpsManager(
                                 val permissionIntent = PendingIntent.getBroadcast(
                                     callingService,
                                     0,
-                                    Intent(ACTION_USB_PERMISSION),
+                                    Intent(ACTION_USB_PERMISSION).apply {
+                                        setPackage(callingService.packageName)
+                                    },
                                     permFlags
                                 )
 
@@ -722,7 +735,12 @@ class USBGpsManager(
 
                 if (gpsDev != null) {
                     this.enabled = true
-                    callingService.registerReceiver(permissionAndDetachReceiver, permissionFilter)
+                    ContextCompat.registerReceiver(
+                        callingService,
+                        permissionAndDetachReceiver,
+                        permissionFilter,
+                        ContextCompat.RECEIVER_NOT_EXPORTED
+                    )
                     debugLog("USB GPS マネージャーが有効化されました")
 
                     notificationPool = Executors.newSingleThreadExecutor()
